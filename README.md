@@ -2,13 +2,13 @@
 
 *(日本語の説明は下部にあります / Japanese translation is available below)*
 
-A beautiful, frameless desktop widget built with Electron and Python that displays real-time airport departure information using the FlightRadar24 API (Application Programming Interface).
+A beautiful, frameless desktop widget built with Electron that displays real-time airport departure and arrival information using the FlightRadar24 API (Application Programming Interface).
 
 ![Desktop Flight Board Screenshot](screenshot.png)
 
 ## Features
 - **Premium UI:** Dark theme, frameless, and transparent background. Matches the aesthetics of modern airport information boards.
-- **Real-time Data:** Fetches live flight data using `FlightRadarAPI`.
+- **Real-time Data:** Fetches live flight data straight from FlightRadar24, with no runtime beyond Electron itself.
 - **Departures and Arrivals:** Flip the board between the two from the settings menu. The header, the plane icon, and the time/endpoint column headings follow the mode.
 - **Airline Logos:** Automatically displays official airline logos using Kiwi.com CDN (Content Delivery Network).
 - **Multi-Airport Support:** Switch between 18 airports in Japan and Taiwan from the settings menu, grouped in the dropdown:
@@ -22,22 +22,12 @@ A beautiful, frameless desktop widget built with Electron and Python that displa
 
 ## Prerequisites
 - Node.js
-- Python 3
 
 ## Installation
 
-1. **Install Node.js dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Set up Python environment (Required):**
-   This application relies on a Python script to fetch flight data. It assumes a virtual environment (`venv`) exists in the project root.
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   pip install -r requirements.txt
-   ```
+```bash
+npm install
+```
 
 ## Usage
 
@@ -53,12 +43,14 @@ All times are the **local time at the airport being shown**, not the time on you
 On the arrivals board, `Terminal` and `Gate` are the ones at the airport you are viewing. How completely FlightRadar24 fills them in varies a lot by airport -- Taoyuan reports an arrival gate for nearly every flight, Haneda for almost none.
 
 ## How to Customize
-- **Add more airports:** You can add more airports to the dropdown menu in `index.html`.
-- **Add city translations:** Expand the `cityTranslations` dictionary in `renderer.js` to translate more cities to your local language.
-- **Change update frequency:** Modify the `setInterval` in `renderer.js` (default is 60,000ms / 1 minute).
+- **Add more airports:** Add an `<option>` to `index.html`, its country to `airportCountries` in `renderer.js` (which drives the domestic/international filter), and a label to `uiText.<lang>.airports` for each language.
+- **Add city translations:** Add an entry to `cityNames` in `renderer.js`. Each one carries every language, so a city cannot be translated in one and forgotten in another.
+- **Change update frequency:** Modify the `setInterval` in `renderer.js` (default is 600,000ms / 10 minutes).
 
 ## Note
-This project uses the unofficial `FlightRadarAPI` (v1.5.3) for educational purposes. Please respect FlightRadar24's terms of service and do not spam the API with excessively frequent requests.
+This project reads FlightRadar24's unofficial endpoint for educational purposes. Please respect FlightRadar24's terms of service and do not spam the API with excessively frequent requests.
+
+The request is made from the main process with Electron's `net.fetch`, not from Node's `fetch` or an HTTP library. FlightRadar24 sits behind bot protection that rejects ordinary HTTP clients on their TLS fingerprint alone -- correct browser headers make no difference -- while Chromium's own network stack is let through.
 
 ## Disclaimer
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -67,11 +59,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 # Desktop Flight Board (日本語)
 
-ElectronとPythonで構築された、FlightRadar24 API (Application Programming Interface) を使用して空港のリアルタイム出発情報を表示する、美しくフレームレスなデスクトップウィジェットです。
+Electronで構築された、FlightRadar24 API (Application Programming Interface) を使用して空港のリアルタイムな出発・到着情報を表示する、美しくフレームレスなデスクトップウィジェットです。
 
 ## 特徴
 - **プレミアムなUI:** ダークテーマ、フレームレス、透過背景を採用。現代の空港の電光掲示板の美しさを再現しています。
-- **リアルタイムデータ:** `FlightRadarAPI` を使用してライブフライトデータを取得します。
+- **リアルタイムデータ:** FlightRadar24 から直接ライブフライトデータを取得します。Electron 以外の実行環境は不要です。
 - **出発・到着の切替:** 設定メニューから出発便／到着便を切り替えられます。ヘッダー、機体アイコン、時刻・行先/出発地の見出しも連動して切り替わります。
 - **航空会社ロゴ:** Kiwi.com CDN (Content Delivery Network) を利用して、公式の航空会社ロゴを自動で表示します。
 - **複数空港対応:** 設定メニューから日本・台湾の18空港を切り替えられます。ドロップダウンはグループ分けされています:
@@ -85,22 +77,12 @@ ElectronとPythonで構築された、FlightRadar24 API (Application Programming
 
 ## 前提条件
 - Node.js
-- Python 3
 
 ## インストール方法
 
-1. **Node.jsの依存関係をインストール:**
-   ```bash
-   npm install
-   ```
-
-2. **Python環境のセットアップ (必須):**
-   このアプリはデータ取得にPythonスクリプトを使用します。プロジェクトルートに仮想環境 `venv` を作成してください。
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # Windowsの場合は `venv\Scripts\activate`
-   pip install -r requirements.txt
-   ```
+```bash
+npm install
+```
 
 ## 使い方
 
@@ -116,12 +98,14 @@ npm start
 到着ボードの `Terminal` / `Gate` は、表示中の空港側の到着ターミナル・ゲートです。FlightRadar24 の収録状況は空港差が大きく、桃園はほぼ全便にゲートが付きますが、羽田はほとんど付きません。
 
 ## カスタマイズ方法
-- **空港の追加:** `index.html` のドロップダウンメニューにオプションを追記することで空港を追加できます。
-- **都市名翻訳の追加:** `renderer.js` 内の `cityTranslations` 辞書を拡張することで、より多くの都市を日本語化できます。
-- **更新頻度の変更:** `renderer.js` 内の `setInterval` の数値を変更することで更新頻度を調整できます（デフォルトは60,000ms＝1分です）。
+- **空港の追加:** `index.html` に `<option>` を追加し、`renderer.js` の `airportCountries` に国コード（国内線/国際線フィルタの判定に使用）、`uiText.<言語>.airports` に各言語のラベルを追記します。
+- **都市名翻訳の追加:** `renderer.js` 内の `cityNames` にエントリを追加します。1エントリが全言語を持つため、片方だけ訳し忘れることがありません。
+- **更新頻度の変更:** `renderer.js` 内の `setInterval` の数値を変更することで更新頻度を調整できます（デフォルトは600,000ms＝10分です）。
 
 ## 注意事項
-このプロジェクトは教育目的で非公式の `FlightRadarAPI` (v1.5.3) を使用しています。FlightRadar24の利用規約を尊重し、過剰な頻度でのAPIリクエスト（スパム行為）は行わないでください。
+このプロジェクトは教育目的で FlightRadar24 の非公式エンドポイントを参照しています。FlightRadar24の利用規約を尊重し、過剰な頻度でのAPIリクエスト（スパム行為）は行わないでください。
+
+リクエストは Node の `fetch` やHTTPライブラリではなく、mainプロセスの Electron `net.fetch` から行っています。FlightRadar24 はボット対策の背後にあり、通常のHTTPクライアントはTLSフィンガープリントだけで弾かれるためです（ブラウザ相当のヘッダを付けても通りません）。Chromium 自身のネットワークスタックであれば通過します。
 
 ## 免責事項
 本ソフトウェアは「現状のまま」で、明示であるか暗黙であるかを問わず、何らの保証もなく提供されます。ここでいう保証とは、商品性、特定の目的への適合性、および権利非侵害についての保証も含みますが、それに限定されるものではありません。作者または著作権者は、契約行為、不法行為、またはそれ以外であろうと、ソフトウェアに起因または関連し、あるいはソフトウェアの使用またはその他の扱いによって生じる一切の請求、損害、その他の義務について何らの責任も負わないものとします。
