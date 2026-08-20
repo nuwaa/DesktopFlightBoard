@@ -1,19 +1,63 @@
 {
   "name": "desktop-flight-board",
   "version": "1.0.0",
-  "description": "A beautiful, frameless desktop widget that displays real-time airport departure information.",
+  "description": "A beautiful, frameless desktop widget that displays real-time airport departure and arrival information.",
   "main": "main.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "pack": "electron-builder --win --dir"
   },
   "keywords": [],
-  "author": "",
+  "author": "nuwaa",
   "license": "Apache-2.0",
   "type": "commonjs",
+  "build": {
+    "appId": "com.github.nuwaa.desktopflightboard",
+    "productName": "Desktop Flight Board",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "renderer.js",
+      "style.css",
+      "providers/**/*",
+      "LICENSE"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Desktop Flight Board"
+    },
+    "portable": {
+      "artifactName": "DesktopFlightBoard-portable-${version}.${ext}"
+    }
+  },
   "devDependencies": {
-    "electron": "^43.4.0"
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3"
   }
 }

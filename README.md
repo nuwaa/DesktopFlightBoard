@@ -42,6 +42,21 @@ All times are the **local time at the airport being shown**, not the time on you
 
 On the arrivals board, `Terminal` and `Gate` are the ones at the airport you are viewing. How completely FlightRadar24 fills them in varies a lot by airport -- Taoyuan reports an arrival gate for nearly every flight, Haneda for almost none.
 
+## Building a Windows executable
+
+```bash
+npm run dist
+```
+
+This writes two files to `dist/`, both around 100 MB:
+
+- `Desktop Flight Board Setup 1.0.0.exe` — installer (per-user, choosable install directory, Start Menu and desktop shortcuts)
+- `DesktopFlightBoard-portable-1.0.0.exe` — single file, no installation
+
+`npm run pack` produces an unpacked build in `dist/win-unpacked/` instead, which is quicker when you only want to check that packaging works.
+
+The executables are unsigned, so Windows SmartScreen will warn on first launch.
+
 ## How to Customize
 - **Add more airports:** Add an `<option>` to `index.html`, its country to `airportCountries` in `renderer.js` (which drives the domestic/international filter), and a label to `uiText.<lang>.airports` for each language.
 - **Add city translations:** Add an entry to `cityNames` in `renderer.js`. Each one carries every language, so a city cannot be translated in one and forgotten in another.
@@ -96,6 +111,21 @@ npm start
 時刻はすべて**表示中の空港のローカル時刻**です（実行端末の時刻ではありません）。台北のボードは東京より1時間遅い表示になり、現地の掲示板と一致します。
 
 到着ボードの `Terminal` / `Gate` は、表示中の空港側の到着ターミナル・ゲートです。FlightRadar24 の収録状況は空港差が大きく、桃園はほぼ全便にゲートが付きますが、羽田はほとんど付きません。
+
+## Windows実行ファイルのビルド
+
+```bash
+npm run dist
+```
+
+`dist/` に2つのファイルが生成されます（いずれも約100MB）:
+
+- `Desktop Flight Board Setup 1.0.0.exe` — インストーラ（ユーザー単位、インストール先の変更可、スタートメニューとデスクトップにショートカット作成）
+- `DesktopFlightBoard-portable-1.0.0.exe` — 単体ファイル、インストール不要
+
+`npm run pack` を使うと `dist/win-unpacked/` に展開形式で出力されます。パッケージングの確認だけしたい場合はこちらが速いです。
+
+実行ファイルには署名がないため、初回起動時に Windows SmartScreen の警告が表示されます。
 
 ## カスタマイズ方法
 - **空港の追加:** `index.html` に `<option>` を追加し、`renderer.js` の `airportCountries` に国コード（国内線/国際線フィルタの判定に使用）、`uiText.<言語>.airports` に各言語のラベルを追記します。

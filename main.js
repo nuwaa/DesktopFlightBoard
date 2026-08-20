@@ -57,7 +57,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // マウスイベントを透過させる場合は以下のコメントを外す
   // mainWindow.setIgnoreMouseEvents(true);
