@@ -10,11 +10,11 @@ class FlightDataProvider {
   }
 
   /**
-   * Fetch the latest departure flights
+   * Fetch the latest flights for the current board (departures or arrivals)
    * @returns {Promise<Array>} Array of flight objects
    */
-  async fetchDepartures() {
-    throw new Error('fetchDepartures() must be implemented');
+  async fetchFlights() {
+    throw new Error('fetchFlights() must be implemented');
   }
 }
 
