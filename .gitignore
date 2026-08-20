@@ -2,10 +2,8 @@
 node_modules/
 npm-debug.log
 
-# Python
-venv/
-__pycache__/
-*.pyc
+# Build output
+dist/
 
 # OS
 .DS_Store

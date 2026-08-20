@@ -1,7 +1,7 @@
-const HanedaApiProvider = require('./providers/HanedaApiProvider');
+const Fr24Provider = require('./providers/Fr24Provider');
 
 // Initialize the data provider
-const provider = new HanedaApiProvider();
+const provider = new Fr24Provider();
 
 // DOM Elements
 const flightListEl = document.getElementById('flight-list');

@@ -89,6 +89,10 @@ body {
 
 /* Settings popover, opened from the gear */
 .settings-panel {
+  /* -webkit-app-region is not inherited, so the panel does not pick up the
+     no-drag of .settings-menu. Without this it overhangs into the container's
+     drag region and the top half of it stops receiving clicks entirely. */
+  -webkit-app-region: no-drag;
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
