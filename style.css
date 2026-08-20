@@ -83,7 +83,57 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative; /* Anchor for the settings panel */
   -webkit-app-region: no-drag; /* Allow clicking */
+}
+
+/* Settings popover, opened from the gear */
+.settings-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 10;
+  min-width: 160px;
+  padding: 12px 14px;
+  background-color: #12132e;
+  border: 1px solid #3a3b5a;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.settings-panel[hidden] {
+  display: none;
+}
+
+.settings-panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #8a8bab;
+  text-transform: uppercase;
+}
+
+.settings-panel label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 3px 2px;
+  border-radius: 4px;
+}
+
+.settings-panel label:hover {
+  background-color: #1f2145;
+}
+
+.settings-panel input[type="radio"] {
+  accent-color: var(--icon-bg);
+  cursor: pointer;
 }
 
 #airport-select, #filter-select {
@@ -116,6 +166,18 @@ body {
 .settings-icon:hover {
   color: white;
   transform: rotate(45deg);
+}
+
+.close-icon {
+  width: 22px;
+  height: 22px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-icon:hover {
+  color: #ff5f57;
 }
 
 .table-header {
@@ -183,8 +245,8 @@ body {
 /* Columns */
 .col-schedule { width: 12%; text-align: left; }
 .col-estimated { width: 12%; text-align: left; }
-.col-destination { width: 26%; display: flex; align-items: baseline; gap: 10px; }
-.col-flight { width: 35%; display: flex; align-items: center; gap: 10px; }
+.col-destination { width: 30%; display: flex; align-items: baseline; gap: 10px; min-width: 0; overflow: hidden; }
+.col-flight { width: 31%; display: flex; align-items: center; gap: 10px; min-width: 0; }
 .col-terminal { width: 8%; text-align: center; }
 .col-gate { width: 7%; text-align: right; }
 
@@ -212,11 +274,20 @@ body {
 
 .dest-main {
   font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
 }
 
 .dest-sub {
   font-size: 14px;
   color: #bbbbbb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 100;
+  min-width: 0;
 }
 
 .flight-info-container {
@@ -244,4 +315,17 @@ body {
   font-family: monospace;
   font-size: 18px;
   letter-spacing: 1px;
+}
+
+.board-message {
+  padding: 24px 20px;
+  color: #888;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.board-message.error {
+  color: #ff8a80;
 }

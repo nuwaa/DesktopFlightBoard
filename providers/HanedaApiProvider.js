@@ -11,21 +11,26 @@ class HanedaApiProvider extends FlightDataProvider {
     this.pythonCommand = path.join(projectRoot, 'venv', isWindows ? 'Scripts' : 'bin', isWindows ? 'python.exe' : 'python3');
     this.scriptPath = path.join(projectRoot, 'python_scripts', 'fetch_flights.py');
     this.airportCode = 'HND';
+    this.mode = 'departures'; // 'departures' | 'arrivals'
   }
 
   setAirport(code) {
     this.airportCode = code;
   }
 
+  setMode(mode) {
+    this.mode = mode;
+  }
+
   async init() {
-    console.log(`Initializing HanedaApiProvider (FlightRadarAPI) for ${this.airportCode}...`);
+    console.log(`Initializing HanedaApiProvider (FlightRadarAPI) for ${this.airportCode} (${this.mode})...`);
     // Initial fetch is now handled by updateBoard() directly
   }
 
-  async fetchDepartures() {
+  async fetchFlights() {
     return new Promise((resolve, reject) => {
       // Execute the python script
-      exec(`"${this.pythonCommand}" "${this.scriptPath}" "${this.airportCode}"`, (error, stdout, stderr) => {
+      exec(`"${this.pythonCommand}" "${this.scriptPath}" "${this.airportCode}" "${this.mode}"`, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
           return reject(error);
@@ -47,7 +52,7 @@ class HanedaApiProvider extends FlightDataProvider {
             };
           });
 
-          // Filter out flights that departed more than 1 hour ago
+          // Filter out flights that already departed / landed more than 1 hour ago
           this.flights = this.flights.filter(f => {
             const timeToCheck = f.estimatedTime || f.scheduleTime;
             return (now.getTime() - timeToCheck.getTime()) < 60 * 60000;
